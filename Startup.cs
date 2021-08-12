@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Authentication.Certificate;
 
 namespace Core_API
 {
@@ -33,9 +32,6 @@ namespace Core_API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Core_API", Version = "v1" });
             });
-            services.AddAuthentication(
-            CertificateAuthenticationDefaults.AuthenticationScheme)
-            .AddCertificate();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +43,7 @@ namespace Core_API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Core_API v1"));
             }
-             app.UseAuthentication();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
