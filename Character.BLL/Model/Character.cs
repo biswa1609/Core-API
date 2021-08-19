@@ -1,6 +1,6 @@
-namespace Core_API.Model
+namespace Character.BLL.Model
 {
-    public class character
+    public class CharacterModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = "Frodo";

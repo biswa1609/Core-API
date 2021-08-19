@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Core_API.Model;
+using Character.BLL.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Core_API.Controllers
@@ -13,23 +13,23 @@ namespace Core_API.Controllers
         {
             
         }
-        public List<character> characters = new List<character>{
-                new character(),
-                new character{Name = "Sam"},
-                new character{Id = 1}
+        public List<CharacterModel> characters = new List<CharacterModel>{
+                new CharacterModel(),
+                new CharacterModel{Name = "Sam"},
+                new CharacterModel{Id = 1}
             };
         [HttpGet("GetAll")]
-        public ActionResult<List<character>> Get()
+        public ActionResult<List<CharacterModel>> Get()
         {
             return Ok(characters);
         }
         [HttpGet("{id}")]
-        public ActionResult<List<character>> Get(int id)
+        public ActionResult<List<CharacterModel>> Get(int id)
         {
             return Ok(characters.Where(x=>x.Id == id).FirstOrDefault());
         }
         [HttpPost("Addcharecter")]
-        public ActionResult<List<character>> Addcharecter(character cha)
+        public ActionResult<List<CharacterModel>> Addcharecter(CharacterModel cha)
         {
             characters.Add(cha);
             return Ok(characters);
