@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Character.BLL.Model;
+using Character.BLL.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Core_API.Controllers
@@ -9,30 +10,26 @@ namespace Core_API.Controllers
    [Route("[controller]")]
     public class CharacterController:ControllerBase
     {
-        public CharacterController()
+        public readonly ICharacterService _CharacterService;
+        public CharacterController(ICharacterService CharacterService)
         {
-            
+            _CharacterService = CharacterService;    
         }
-        public List<CharacterModel> characters = new List<CharacterModel>{
-                new CharacterModel(),
-                new CharacterModel{Name = "Sam"},
-                new CharacterModel{Id = 1}
-            };
+       
         [HttpGet("GetAll")]
         public ActionResult<List<CharacterModel>> Get()
         {
-            return Ok(characters);
+            return Ok(_CharacterService.GetAll());
         }
         [HttpGet("{id}")]
-        public ActionResult<List<CharacterModel>> Get(int id)
+        public ActionResult<CharacterModel> Get(int id)
         {
-            return Ok(characters.Where(x=>x.Id == id).FirstOrDefault());
+            return Ok(_CharacterService.GetById(id));
         }
         [HttpPost("Addcharecter")]
-        public ActionResult<List<CharacterModel>> Addcharecter(CharacterModel cha)
+        public ActionResult<List<CharacterModel>> Addcharecter(CharacterModel characters)
         {
-            characters.Add(cha);
-            return Ok(characters);
+            return Ok(_CharacterService.Addcharecter(characters));
         }
 
     }
