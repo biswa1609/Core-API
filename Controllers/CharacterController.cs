@@ -3,6 +3,8 @@ using System.Linq;
 using Character.BLL.Model;
 using Character.BLL.Interface;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using Character.BLL.Dtos.Character;
 
 namespace Core_API.Controllers
 {
@@ -17,19 +19,29 @@ namespace Core_API.Controllers
         }
        
         [HttpGet("GetAll")]
-        public ActionResult<List<CharacterModel>> Get()
+        public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Get()
         {
-            return Ok(_CharacterService.GetAll());
+            return Ok(await _CharacterService.GetAll());
         }
         [HttpGet("{id}")]
-        public ActionResult<CharacterModel> Get(int id)
+        public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> Get(int id)
         {
-            return Ok(_CharacterService.GetById(id));
+            return Ok(await _CharacterService.GetById(id));
         }
         [HttpPost("Addcharecter")]
-        public ActionResult<List<CharacterModel>> Addcharecter(CharacterModel characters)
+        public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Addcharecter(AddCharacterDto characters)
         {
-            return Ok(_CharacterService.Addcharecter(characters));
+            return Ok(await _CharacterService.Addcharecter(characters));
+        }
+        [HttpPut("Updatecharecter")]
+        public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> Updatecharecter(UpdateCharacterDto characters)
+        {
+            return Ok(await _CharacterService.UpdateCharacter(characters));
+        }
+        [HttpDelete("Deletecharecter")]
+        public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> Deletecharecter(int id)
+        {
+            return Ok(await _CharacterService.DeleteCharacter(id));
         }
 
     }
