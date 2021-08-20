@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Character.BLL.Data;
 using Character.BLL.Model;
@@ -15,7 +16,8 @@ namespace Character.BLL.Authentication
         }
         public async Task<bool> AlreadyExist(string userName)
         {
-            if(await _dataContext.Users.AnyAsync(x=> x.UserName.ToLower() == userName.ToLower()))
+            //var a =  _dataContext.Users.ToList();
+            if( await _dataContext.Users.AnyAsync(x=> x.UserName.ToLower() == userName.ToLower()))
             {
                 return true;
             }
@@ -79,7 +81,7 @@ namespace Character.BLL.Authentication
                 var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(Password));
                 for(int i = 0; i< PasswordHash.Length; i++)
                 {
-                    if(PasswordHash[i] == computedHash[i])
+                    if(PasswordHash[i] != computedHash[i])
                         return false;
                 }
                 return true;

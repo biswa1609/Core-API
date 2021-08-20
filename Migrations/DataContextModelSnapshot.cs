@@ -81,7 +81,7 @@ namespace Core_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Character.BLL.Model.CharacterModel", b =>
