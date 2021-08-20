@@ -13,6 +13,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Character.BLL.Interface;
 using Character.BLL.Services;
+using Microsoft.EntityFrameworkCore;
+using Character.BLL.Data;
+using Character.BLL.Authentication;
 
 namespace Core_API
 {
@@ -29,12 +32,17 @@ namespace Core_API
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddDbContext<DataContext>(options =>
+                                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers(); 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Core_API", Version = "v1" });
             });
+            
             services.AddScoped<ICharacterService,CharacterService>();
+            services.AddScoped<IAuthentication, Authentication>();
+
             services.AddAutoMapper(typeof(Startup));
         }
 
