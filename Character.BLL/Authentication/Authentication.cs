@@ -1,18 +1,25 @@
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Character.BLL.Data;
 using Character.BLL.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Character.BLL.Authentication
 {
     public class Authentication : IAuthentication
     {
         private readonly DataContext _dataContext;
-        public Authentication(DataContext dataContext)
+        private readonly IConfiguration _configuration;
+
+        public Authentication(DataContext dataContext, IConfiguration configuration)
         {
             _dataContext = dataContext;
-
+           _configuration = configuration;
         }
         public async Task<bool> AlreadyExist(string userName)
         {
@@ -40,7 +47,7 @@ namespace Character.BLL.Authentication
             }
             else
             {
-                response.Data = userDetails.Id.ToString();
+                response.Data = CreateToken(userDetails);
             }
             return response;
         }
@@ -87,6 +94,30 @@ namespace Character.BLL.Authentication
                 return true;
             }
             
+        }
+         private string CreateToken(User user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName),
+            };
+
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var tokendDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = System.DateTime.Now.AddDays(1),
+                SigningCredentials = creds
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokendDescriptor);
+
+            return tokenHandler.WriteToken(token);
         }
     }
 }

@@ -5,9 +5,12 @@ using Character.BLL.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Character.BLL.Dtos.Character;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Core_API.Controllers
 {
+
+    [Authorize]
    [ApiController]
    [Route("[controller]")]
     public class CharacterController:ControllerBase
@@ -17,7 +20,6 @@ namespace Core_API.Controllers
         {
             _CharacterService = CharacterService;    
         }
-       
         [HttpGet("GetAll")]
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Get()
         {
