@@ -20,6 +20,7 @@ using Character.BLL.Authentication;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace Core_API
 {
@@ -85,6 +86,8 @@ namespace Core_API
                 });
             services.AddScoped<ICharacterService,CharacterService>();
             services.AddScoped<IAuthentication, Authentication>();
+            services.AddSingleton<IHttpContextAccessor , HttpContextAccessor>();
+            services.AddScoped<IWeaponService, WeaponService>();
 
             services.AddAutoMapper(typeof(Startup));
         }

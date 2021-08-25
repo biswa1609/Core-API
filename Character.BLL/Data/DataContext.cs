@@ -11,6 +11,7 @@ namespace Character.BLL.Data
         }
          public DbSet<CharacterModel> CharacterModels { get; set; }
          public DbSet<User> Users { get; set; }
+         public DbSet<Weapon> Weapons { get; set; }
         
     }
 }

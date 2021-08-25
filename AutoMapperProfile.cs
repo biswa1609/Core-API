@@ -1,5 +1,6 @@
 using AutoMapper;
 using Character.BLL.Dtos.Character;
+using Character.BLL.Dtos.Wepon;
 using Character.BLL.Model;
 
 namespace Core_API
@@ -11,6 +12,7 @@ namespace Core_API
             CreateMap<CharacterModel,GetCharacterDto>();
             CreateMap<AddCharacterDto,CharacterModel>();
             CreateMap<UpdateCharacterDto,CharacterModel>();
+            CreateMap<Weapon, GetWeaponDto>();
         }
         
     }
